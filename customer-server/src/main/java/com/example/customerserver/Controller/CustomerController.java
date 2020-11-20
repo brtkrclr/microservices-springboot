@@ -27,20 +27,29 @@ public class CustomerController {
         return customers;
     }
 
-
-
-
-    /*p
-
-    @GetMapping
-
-
-    @GetMapping("/{id}")
-    public Customer getCustomerById(@PathVariable int id) {
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public Customer getCustomerById(@PathVariable int id){
         return customers.stream()
                 .filter(customer -> customer.getId() == id)
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
-    }*/
+    }
+
+    @RequestMapping(value = "/{name}",method = RequestMethod.GET)
+    public Customer getCustomerByName(@PathVariable String name){
+        return customers.stream()
+                .filter(customer -> customer.getName()== name)
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public Customer addCustomer(@RequestBody Customer customer){
+        
+    }
+
+
 
 }
+
+
