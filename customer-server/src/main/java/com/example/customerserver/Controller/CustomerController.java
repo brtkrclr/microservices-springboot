@@ -45,7 +45,17 @@ public class CustomerController {
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Customer addCustomer(@RequestBody Customer customer){
-        
+        if (customer.getId() != null) {
+            return null;
+        }
+        customers.add(customer);
+        return customer;
+    }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    public void deleteCustomer(@PathVariable int id){
+            customers.remove(getCustomerById(id));
+
     }
 
 
