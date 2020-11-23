@@ -1,4 +1,4 @@
-package com.example.orderserver;
+package com.example.orderserver.Order;
 
 public class Order {
     private final int id;

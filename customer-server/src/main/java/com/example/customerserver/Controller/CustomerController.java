@@ -4,6 +4,7 @@ package com.example.customerserver.Controller;
 import com.example.customerserver.Customer.Customer;
 import com.example.customerserver.Repository.CustomerRepo;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -43,19 +44,10 @@ public class CustomerController {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public Customer addCustomer(@RequestBody Customer customer){
-        if (customer.getId() != null) {
-            return null;
-        }
-        customers.add(customer);
-        return customer;
-    }
-
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public void deleteCustomer(@PathVariable int id){
+    public List<Customer> deleteCustomer(@PathVariable int id){
             customers.remove(getCustomerById(id));
-
+            return customers;
     }
 
 
