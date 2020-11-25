@@ -2,12 +2,14 @@ package com.example.orderserver.Service;
 
 import com.example.orderserver.Order.Order;
 import com.example.orderserver.Repository.OrderRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class OrderService implements OrderBuild{
+
     private OrderRepo orderRepo;
 
     @Override

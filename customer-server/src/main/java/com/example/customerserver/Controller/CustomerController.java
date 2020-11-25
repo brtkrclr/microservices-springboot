@@ -2,7 +2,6 @@ package com.example.customerserver.Controller;
 
 
 import com.example.customerserver.Customer.Customer;
-import com.example.customerserver.Repository.CustomerRepo;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,9 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping(value = "/")
 public class CustomerController {
+    @Autowired
     private final Logger LOG = (Logger) LoggerFactory.getLogger(getClass());
+
 
     private List<Customer> customers = Arrays.asList(
             new Customer(1, "Joe Bloggs"),
@@ -28,30 +29,28 @@ public class CustomerController {
         return customers;
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Customer getCustomerById(@PathVariable int id){
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Customer getCustomerById(@PathVariable int id) {
         return customers.stream()
                 .filter(customer -> customer.getId() == id)
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    @RequestMapping(value = "/{name}",method = RequestMethod.GET)
-    public Customer getCustomerByName(@PathVariable String name){
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public Customer getCustomerByName(@PathVariable String name) {
         return customers.stream()
-                .filter(customer -> customer.getName()== name)
+                .filter(customer -> customer.getName() == name)
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public List<Customer> deleteCustomer(@PathVariable int id){
-            customers.remove(getCustomerById(id));
-            return customers;
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public List<Customer> deleteCustomer(@PathVariable int id) {
+        customers.remove(getCustomerById(id));
+        return customers;
+
+
     }
-
-
-
 }
-
 

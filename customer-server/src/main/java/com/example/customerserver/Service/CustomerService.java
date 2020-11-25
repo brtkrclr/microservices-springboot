@@ -2,6 +2,7 @@ package com.example.customerserver.Service;
 
 import com.example.customerserver.Customer.Customer;
 import com.example.customerserver.Repository.CustomerRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 public class CustomerService implements CustomerBuild{
+
     private CustomerRepo customerRepo;
 
     @Override
