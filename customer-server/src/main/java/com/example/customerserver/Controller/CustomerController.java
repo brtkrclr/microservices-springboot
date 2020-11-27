@@ -1,56 +1,33 @@
 package com.example.customerserver.Controller;
-
-
 import com.example.customerserver.Customer.Customer;
-import org.slf4j.LoggerFactory;
+import com.example.customerserver.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
-@RequestMapping(value = "/")
 public class CustomerController {
     @Autowired
-    private final Logger LOG = (Logger) LoggerFactory.getLogger(getClass());
+    private CustomerService customerService;
 
-
-    private List<Customer> customers = Arrays.asList(
-            new Customer(1, "Joe Bloggs"),
-            new Customer(2, "Jane Doe"),
-            new Customer(3, "Bilbo Baggins"));
-
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Customer createUser(@RequestBody Customer customer) {
+        return customerService.save(customer);
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Customer> getAllCustomers() {
-        LOG.info("Getting all customers...");
-        return customers;
+        return customerService.getAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Customer getCustomerById(@PathVariable int id) {
-        return customers.stream()
-                .filter(customer -> customer.getId() == id)
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+    public Customer getCustomerById(@PathVariable String id) {
+        return customerService.getById(id);
     }
 
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
-    public Customer getCustomerByName(@PathVariable String name) {
-        return customers.stream()
-                .filter(customer -> customer.getName() == name)
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public List<Customer> deleteCustomer(@PathVariable int id) {
-        customers.remove(getCustomerById(id));
-        return customers;
-
-
+    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+    public String deleteUser(@PathVariable String id) {
+        customerService.delete(id);
+        return id + " is Deleted";
     }
 }
-

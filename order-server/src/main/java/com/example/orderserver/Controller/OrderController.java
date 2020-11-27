@@ -2,6 +2,7 @@ package com.example.orderserver.Controller;
 
 import com.example.orderserver.Order.Order;
 import com.example.orderserver.Repository.OrderRepo;
+import com.example.orderserver.Service.OrderService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -13,46 +14,30 @@ import java.util.logging.Logger;
 
 @RestController
 public class OrderController {
-    private final Logger LOG=(Logger) LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private OrderService orderService;
 
-    private final List<Order> orders = Arrays.asList(
-            new Order(1, 1, "Product A"),
-            new Order(2, 1, "Product B"),
-            new Order(3, 2, "Product C"),
-            new Order(4, 1, "Product D"),
-            new Order(5, 2, "Product E"));
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Order createOrder(@RequestBody Order order) {
+        return orderService.save(order);
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Order> getAllOrders() {
-        LOG.info("Getting all orders...");
-        return orders;
+    public List<Order> getAllCustomers() {
+        return orderService.getAll();
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Order getOrderById(@PathVariable int id) {
-        return orders.stream()
-                .filter(order -> order.getId() == id)
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Order getOrderById(@PathVariable String id) {
+        return orderService.getById(id);
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Order getOrderByCustomerId(@PathVariable int id) {
-        return orders.stream()
-                .filter(order -> order.getId() == order.getCustomerId())
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+    public String deleteUser(@PathVariable String id) {
+        orderService.delete(id);
+        return id + " is Deleted";
     }
-
-
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public List<Order> deleteOrders(@PathVariable int id){
-        orders.remove(getOrderById(id));
-        return orders;
-    }
-
-
 
 
 }

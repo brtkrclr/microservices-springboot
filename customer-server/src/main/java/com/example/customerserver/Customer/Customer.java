@@ -1,5 +1,8 @@
 package com.example.customerserver.Customer;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Customer {
     private  int id;
     private  String name;
